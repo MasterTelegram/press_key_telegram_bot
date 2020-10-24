@@ -8,22 +8,17 @@ from telethon import TelegramClient, events, sync
 import json
 import iz_func
 ### --------------------------------------------------------------------------
-
 from telethon.sync import TelegramClient
 from telethon import functions, types
 from telethon.tl.functions.messages import GetHistoryRequest, GetBotCallbackAnswerRequest
-
-
 print ('[+] Версия 3.3')
 namebot  = '@send314_bot'
-api_hash    = '1b40d1d01f8922b384d44e29d32f6acf'
+api_hash    = 'XXXXXXXXXXXXXXXXXXXXXXXX'
 api_id      = 192804
-phone_number = '+79031279070'
-
+phone_number = 'XXXXXXXXXXXXXXXXXXXXXXXXX'
 session = 'session_'+str(phone_number)+'_session'
 client = TelegramClient(session,api_id=api_id,api_hash=api_hash) ### ,proxy=(socks.HTTP,ip ,int(port)
 client.connect() 
-
 if not client.is_user_authorized():
     print ('[+] Регистрация клиента',session)  
     client.send_code_request(phone_number)
@@ -33,49 +28,32 @@ if not client.is_user_authorized():
 if not client.is_user_authorized():
     print ('[+] Нет клиента. Отправка сообшения в группу.')
 else:
-    #channel_username='Psyhologram Bid'
-    channel_username = -1001448926828
-    #channel_username   =  -1448926828  
-
-
+    channel_username = -XXXXXXXXXXXXXX
     channel_entity=client.get_entity(channel_username)
     posts = client(GetHistoryRequest(peer=channel_entity,limit=1,offset_date=None,offset_id=0,max_id=0,min_id=0,add_offset=0,hash=0))
-    print ('------------------------------------------------------------------------------------------')
     print (posts)
-    print ('[+]')
-    print ('[+]')
     messageId = posts.messages[0].id
     message = posts.messages[0].message
     print ('[+] messageId',messageId)
-    print ('[+]')
     print ('[+]',message)
-
-
     yng = 0
     if message.find ('Возраст') != -1:
         nm = message.find ('Возраст')
         yng = int(message[nm+8:nm+11])
         print (yng)
-
-
         minvz = (iz_func.load_setting ('Минимальный возраст',namebot))
         maxvz = (iz_func.load_setting ('Максимальный возраст',namebot))      
         print ('minvz',minvz)
         print ('maxvz',maxvz)
-
-
-    print ('------------------------------------------------------------------------------------------')
     try: 
         print (posts.messages[0].reply_markup.rows[0].buttons[0].data)
         #client(GetBotCallbackAnswerRequest(channel_username,messageId,data=b'press'))
     except Exception as e: 
         pass  
         print (e)  
-
 @client.on(events.NewMessage)
 async def my_event_handler(event):
     import iz_func
-    print ('==1========================================================================================')
     print (event)    
     user_id  = '590719271'
     variable = 'Статус бота'
@@ -84,8 +62,6 @@ async def my_event_handler(event):
     message = ''
     message = event.original_update.message
     print ('[status_o]',status_o)
-    print ('[+]')
-    print ('[+] messages')
     print ('[+]',message)
     yng = 0
     minvz = 0
@@ -110,7 +86,6 @@ async def my_event_handler(event):
         else:    
             label = 'Нет команды включить'
             print ('[+]',label)
-
         twait = int(iz_func.load_setting ('Время ожидания бота',namebot))
         print ('[+] Время ожидания между сделками:',twait)
         if utime > twait:
@@ -118,7 +93,6 @@ async def my_event_handler(event):
         else:    
             label = 'Не прошло время'
             print ('[+]',label)
-    
         print ('[+] Возраст:',yng,',а мин',minvz)
         if yng < minvz:
             label = 'Возраст не совпадает мин'
@@ -179,7 +153,6 @@ async def my_event_handler(event):
             print ('[-] Отменен по условию фильтра',label )
     else:
         print ('[+] В сообщении нет возраста')
-    print ('==2========================================================================================')    
 client.start()
 client.run_until_disconnected()
 
